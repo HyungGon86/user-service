@@ -24,19 +24,18 @@ public class RequestUserDto {
     @Size(min = 2, message = "Password not be less than two characters")
     private String pwd;
 
-    private String userId;
     private Date createdAt;
+
     private String encryptedPwd;
 
     public RequestUserDto() {
     }
 
     @Builder
-    public RequestUserDto(String email, String name, String pwd, String userId, Date createdAt, String encryptedPwd) {
+    public RequestUserDto(String email, String name, String pwd, Date createdAt, String encryptedPwd) {
         this.email = email;
         this.name = name;
         this.pwd = pwd;
-        this.userId = userId;
         this.createdAt = createdAt;
         this.encryptedPwd = encryptedPwd;
     }
