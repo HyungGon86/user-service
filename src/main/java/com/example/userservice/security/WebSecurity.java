@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class Websecurity {
+public class WebSecurity {
 
     private static final String[] WHITE_LIST = {
             "/users/**"
