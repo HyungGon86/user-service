@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurity {
 
     private final AuthenticationManager authenticationManager;
+    private final CorsFilter corsFilter;
 
     private static final String[] WHITE_LIST = {
             "/users/**"
@@ -25,15 +27,14 @@ public class WebSecurity {
         return http.csrf().disable()
                 .headers(authorize -> authorize
                         .frameOptions().disable())
+                .httpBasic().disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll())
-                .addFilter(getAuthenticationFilter(authenticationManager))
+                .addFilter(new AuthenticationFilter(authenticationManager))
+                .addFilter(corsFilter)
                 .getOrBuild();
     }
 
-    private AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) {
-        return new AuthenticationFilter(authenticationManager);
-    }
 
 }
