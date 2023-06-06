@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.CorsFilter;
 
@@ -17,6 +19,7 @@ public class WebSecurity {
 
     private final AuthenticationManager authenticationManager;
     private final CorsFilter corsFilter;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private static final String[] WHITE_LIST = {
             "/users/**"
@@ -27,7 +30,9 @@ public class WebSecurity {
         return http.csrf().disable()
                 .headers(authorize -> authorize
                         .frameOptions().disable())
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic().disable()
+                .formLogin().disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(WHITE_LIST).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll())
@@ -35,6 +40,7 @@ public class WebSecurity {
                 .addFilter(corsFilter)
                 .getOrBuild();
     }
+
 
 
 }

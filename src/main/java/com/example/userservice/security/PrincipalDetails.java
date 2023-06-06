@@ -1,48 +1,53 @@
 package com.example.userservice.security;
 
+import com.example.userservice.domain.Users;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
 @RequiredArgsConstructor
 public class PrincipalDetails implements UserDetails {
 
+    private final Users users;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return users.getEncryptedPwd();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return users.getName();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
