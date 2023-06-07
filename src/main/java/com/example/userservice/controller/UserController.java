@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -54,7 +53,7 @@ public class UserController {
                         .email(user.getEmail())
                         .responseOrders(user.getOrders())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResponseEntity<>(responseUserDtoList, HttpStatus.OK);
 

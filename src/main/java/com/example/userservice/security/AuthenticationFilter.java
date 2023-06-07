@@ -18,21 +18,16 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static com.example.userservice.security.JwtProperties.*;
 
 @Slf4j
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-
-    @Value("${token.expiration_time}")
-    private String exprationTime;
-
-    @Value("${token.secret}")
-    private String secretKey;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -59,8 +54,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         String jwt = Jwts.builder()
                 .setSubject(principal.getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(exprationTime)))
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + jwt);
