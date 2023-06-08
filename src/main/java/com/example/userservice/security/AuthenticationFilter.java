@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,13 +20,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.example.userservice.security.JwtProperties.*;
-
 @Slf4j
 @RequiredArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtProperties jwtProperties;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -54,8 +52,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         String jwt = Jwts.builder()
                 .setSubject(principal.getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(jwtProperties.getExpirationTime())))
+                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecret())
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + jwt);

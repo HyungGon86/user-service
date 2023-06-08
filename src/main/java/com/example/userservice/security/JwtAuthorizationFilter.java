@@ -16,16 +16,17 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import java.io.IOException;
 
-import static com.example.userservice.security.JwtProperties.SECRET_KEY;
 
 @Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UserRepository userRepository;
+    private JwtProperties jwtProperties;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository, JwtProperties jwtProperties) {
         super(authenticationManager);
         this.userRepository = userRepository;
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         try {
             email = Jwts
                     .parser()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(jwtProperties.getSecret())
                     .parseClaimsJws(jwtToken)
                     .getBody()
                     .getSubject();

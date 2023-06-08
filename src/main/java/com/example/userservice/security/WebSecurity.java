@@ -21,6 +21,7 @@ public class WebSecurity {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final CorsFilter corsFilter;
     private final UserRepository userRepository;
+    private final JwtProperties jwtProperties;
 
     private static final String[] WHITE_LIST = {
             "/users/**"
@@ -38,8 +39,8 @@ public class WebSecurity {
                         .requestMatchers(WHITE_LIST).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers("/health_check").authenticated())
-                .addFilter(new AuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
+                .addFilter(new AuthenticationFilter(authenticationManager(), jwtProperties))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository, jwtProperties))
                 .addFilter(corsFilter)
                 .getOrBuild();
     }
