@@ -4,6 +4,21 @@ server:
 spring:
   application:
     name: user-service
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: kgh198621
+    password: gudrhs11
+
+  config:
+    import: "optional:configserver:http://localhost:8888/"
+  cloud:
+    refresh:
+      extra-refreshable: com.zaxxer.hikari.HikariDataSource
+    config:
+      name: ecommerce
+
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -20,9 +35,9 @@ spring:
       ddl-auto: create-drop
     show-sql: true
 
-token:
-  expiration_time: 3600000
-  secret: user_token
+#token:
+#  expiration_time: 3600000
+#  secret: user_token
 
 eureka:
   instance:
@@ -32,3 +47,9 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, busrefresh

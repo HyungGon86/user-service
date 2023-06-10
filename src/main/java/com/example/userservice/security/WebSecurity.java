@@ -24,7 +24,8 @@ public class WebSecurity {
     private final JwtProperties jwtProperties;
 
     private static final String[] WHITE_LIST = {
-            "/users/**"
+            "/users/**",
+            "/actuator/**"
     };
 
     @Bean
