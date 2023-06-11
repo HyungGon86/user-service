@@ -5,25 +5,23 @@ spring:
   application:
     name: user-service
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: kgh198621
-    password: gudrhs11
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: kgh198621
+#    password: gudrhs11
 
   config:
     import: "optional:configserver:http://localhost:8888/"
   cloud:
-    refresh:
-      extra-refreshable: com.zaxxer.hikari.HikariDataSource
     config:
-      name: ecommerce
+      name: user-service
 
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
   h2:
     console:
       enabled: true
