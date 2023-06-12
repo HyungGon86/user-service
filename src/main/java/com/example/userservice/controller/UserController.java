@@ -58,7 +58,6 @@ public class UserController {
                 .map(user -> ResponseUserDto.builder()
                         .name(user.getName())
                         .email(user.getEmail())
-                        .responseOrders(user.getOrders())
                         .build())
                 .toList();
 

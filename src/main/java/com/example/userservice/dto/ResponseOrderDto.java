@@ -16,6 +16,9 @@ public class ResponseOrderDto {
 
     private String orderId;
 
+    public ResponseOrderDto() {
+    }
+
     @Builder
     public ResponseOrderDto(String productId, int qty, int unitPrice, int totalPrice, LocalDateTime createdAt, String orderId) {
         this.productId = productId;

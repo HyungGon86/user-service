@@ -5,19 +5,18 @@ spring:
   application:
     name: user-service
 
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: kgh198621
-#    password: gudrhs11
-
   config:
     import: "optional:configserver:http://localhost:8888/"
   cloud:
     config:
       name: user-service
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: full
 
-#  datasource:
+  #  datasource:
 #    url: jdbc:h2:mem:testdb
 #    username: sa
 #    password:
@@ -51,3 +50,8 @@ management:
     web:
       exposure:
         include: refresh, health, beans, busrefresh
+
+
+logging:
+  level:
+    com.example.userservice.client: debug
