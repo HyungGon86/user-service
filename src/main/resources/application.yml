@@ -32,10 +32,6 @@ spring:
       ddl-auto: create-drop
     show-sql: true
 
-#token:
-#  expiration_time: 3600000
-#  secret: user_token
-
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
