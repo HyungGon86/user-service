@@ -50,3 +50,5 @@ management:
 logging:
   level:
     com.example.userservice.client: debug
+
+
