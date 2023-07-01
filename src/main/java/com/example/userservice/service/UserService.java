@@ -6,17 +6,16 @@ import com.example.userservice.dto.RequestUserDto;
 import com.example.userservice.dto.ResponseOrderDto;
 import com.example.userservice.dto.ResponseUserDto;
 import com.example.userservice.repository.UserRepository;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +28,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final RestTemplate restTemplate;
     private final OrderServiceClient orderServiceClient;
+    private final CircuitBreakerFactory circuitBreakerFactory;
 
     @Transactional
     public void createUser(RequestUserDto requestUserDto) {
@@ -51,7 +51,10 @@ public class UserService {
                 new ParameterizedTypeReference<List<ResponseOrderDto>>() {
                 });*/
 
-        List<ResponseOrderDto> orderDtoList = orderServiceClient.getOrders(users.getId());
+        /*List<ResponseOrderDto> orderDtoList = orderServiceClient.getOrders(users.getId());*/
+
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuit breaker");
+        List<ResponseOrderDto> orderDtoList = circuitBreaker.run(() -> orderServiceClient.getOrders(users.getId()), throwable -> new ArrayList<>());
 
         return ResponseUserDto.builder()
                 .email(users.getEmail())

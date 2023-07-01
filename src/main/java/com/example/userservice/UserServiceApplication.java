@@ -11,8 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.logging.Logger;
-
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
