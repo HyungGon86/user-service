@@ -5,6 +5,12 @@ spring:
   application:
     name: user-service
 
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://127.0.0.1:9411
+
   config:
     import: "optional:configserver:http://localhost:8888/"
   cloud:
@@ -50,8 +56,6 @@ management:
 logging:
   level:
     com.example.userservice.client: debug
-
-
 
 
 

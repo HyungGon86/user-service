@@ -53,8 +53,10 @@ public class UserService {
 
         /*List<ResponseOrderDto> orderDtoList = orderServiceClient.getOrders(users.getId());*/
 
+        log.info("Before call orders microservice");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuit breaker");
         List<ResponseOrderDto> orderDtoList = circuitBreaker.run(() -> orderServiceClient.getOrders(users.getId()), throwable -> new ArrayList<>());
+        log.info("After called orders microservice");
 
         return ResponseUserDto.builder()
                 .email(users.getEmail())
