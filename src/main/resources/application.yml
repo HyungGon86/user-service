@@ -5,12 +5,6 @@ spring:
   application:
     name: user-service
 
-  sleuth:
-    sampler:
-      probability: 1.0
-  zipkin:
-    base-url: http://127.0.0.1:9411
-
   config:
     import: "optional:configserver:http://localhost:8888/"
   cloud:
@@ -48,21 +42,17 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411
+
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, busrefresh
+        include: refresh, health, beans, busrefresh, info, metrics, prometheus
 
 logging:
   level:
     com.example.userservice.client: debug
-
-
-
-
-
-
-
-
 
 
