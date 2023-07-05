@@ -56,3 +56,5 @@ logging:
     com.example.userservice.client: debug
 
 
+
+
